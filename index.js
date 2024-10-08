@@ -12,6 +12,7 @@ const proxies = fs.readFileSync(proxyFile, 'utf8')
 
 const BEARERS = JSON.parse(fs.readFileSync('bearers.json', 'utf-8'));
 for (let i = 0; i < BEARERS.length; i++) {
-    let proxyAgent = new HttpsProxyAgent(proxies[i]);
+    let proxy = `http://${proxies[i].split(':')[2]}:${proxies[i].split(':')[3]}@${proxies[i].split(':')[0]}:${proxies[i].split(':')[1]}`;
+    let proxyAgent = new HttpsProxyAgent(proxy);
     promises.push(automaticFlow(i + 1, BEARERS[i], proxyAgent));
 }
